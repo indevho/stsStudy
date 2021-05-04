@@ -1,5 +1,6 @@
 package aaa.controll;
 
+import java.io.File;
 import java.io.FileOutputStream;
 
 import javax.servlet.http.HttpServletRequest;
@@ -103,16 +104,21 @@ public class FileController {
 			HttpServletRequest req
 			
 			) {
-
+		
 		System.out.println("com3:"+mm);
 		System.out.println(mm.getUpfile1().getOriginalFilename());	
 		System.out.println(mm.getUpfile1().getName());	
-
-		System.out.println(mm.getUpfile2().getOriginalFilename());	
+		
+		System.out.println("=======================");
+		System.out.println(mm.getUpfile2().getOriginalFilename());
+		
+//		 파일을 검사한다? 검사해서 존재하면 mm에다가 좀 다른걸 달아올린다.
+		
 		
 		fileSave(mm.getUpfile1(), req);
+				//Multipartfile // 리퀘스트
 		
-		
+		mm.setUp2(fileSave2(mm.getUpfile2(),req));
 		
 		
 		
@@ -131,6 +137,9 @@ public class FileController {
 		try {
 			FileOutputStream fos = new FileOutputStream(path+"\\"+mf.getOriginalFilename());
 			
+			// 이 쓰는 과정에[서 아니  fos 에서. 먼가 이부분에서 제목을 바꿔준 뒤에 . 
+			//fot 의 값을 바꾸어 주도록 해야것네. 
+			
 			
 			
 			fos.write(mf.getBytes());
@@ -146,7 +155,46 @@ public class FileController {
 		}
 	}
 	
+
+	
+	String fileSave2(MultipartFile mf, HttpServletRequest request) {
+		String path = request.getRealPath("up");
+		path = "C:\\Users\\unoes\\Documents\\s\\springWork\\mvcProj\\src\\main\\webapp\\up";
+		
+		int pos = mf.getOriginalFilename().lastIndexOf(".");
+		
+		String fname = mf.getOriginalFilename();
+		String domain = fname.substring(0,pos);
+		String ext = fname.substring(pos);
+		
+		int no = 0;
+		
+		try {
+			File ff = new File(path+"\\"+fname);
+			while(ff.exists()) {
+				no++;
+				fname=domain+no+ext;
+				ff = new File(path+"\\"+fname);
+			}
+			
+			
+			
+			
+			FileOutputStream fos = new FileOutputStream(ff);
+			
+			fos.write(mf.getBytes());
+			
+			fos.close();
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return fname;
+	}
 	
 	
+		
 	
 }

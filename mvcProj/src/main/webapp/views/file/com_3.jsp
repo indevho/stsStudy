@@ -29,7 +29,8 @@
 	<tr>
 		<td>파일2</td>
 		<%-- <td>${param.upfile2 }</td> --%>
-		<td>${member.upfile2.originalFilename }:모델이직접주는이름</td>
+		<td>${member.up2 }</td>
+		<!-- up2로 하고 싶다면  -->
 	</tr>
 </table>
 
